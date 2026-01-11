@@ -949,28 +949,7 @@
                     <p style="font-size: 1.5rem; color: var(--gold); margin-top: 20px;"><strong>Do zapłaty: <span id="summaryPrice"></span> zł</strong></p>
                 </div>
 
-                <h3>Dane do faktury</h3>
-
-<div class="form-group">
-    <label>Telefon *</label>
-    <input type="tel" id="phone" required placeholder="+48 123 456 789">
-</div>
-
-<div class="form-group">
-    <label>Ulica i numer *</label>
-    <input type="text" id="street" required placeholder="ul. Przykładowa 10/5">
-</div>
-
-<div class="form-group" style="display: grid; grid-template-columns: 1fr 2fr; gap: 15px;">
-    <div>
-        <label>Kod pocztowy *</label>
-        <input type="text" id="postalCode" required placeholder="00-000">
-    </div>
-    <div>
-        <label>Miasto *</label>
-        <input type="text" id="city" required placeholder="Warszawa">
-    </div>
-</div>
+<h3>Dane do płatności</h3>
 
 <div class="form-group">
     <label style="display: flex; align-items: center; cursor: pointer;">
@@ -981,17 +960,38 @@
 
 <div id="invoiceFields" style="display: none;">
     <div class="form-group">
-        <label>Nazwa firmy</label>
+        <label>Nazwa firmy *</label>
         <input type="text" id="companyName" placeholder="Nazwa Sp. z o.o.">
     </div>
     
     <div class="form-group">
-        <label>NIP</label>
+        <label>NIP *</label>
         <input type="text" id="nip" placeholder="1234567890">
     </div>
 </div>
 
-<h3 style="margin-top: 40px;">Dane karty</h3>
+<div class="form-group">
+    <label>Imię i nazwisko *</label>
+    <input type="text" id="billingName" required>
+</div>
+
+<div id="addressFields">
+    <div class="form-group">
+        <label>Adres (ulica, numer domu, numer lokalu)</label>
+        <input type="text" id="street" placeholder="ul. Przykładowa 10/5">
+    </div>
+
+    <div class="form-group" style="display: grid; grid-template-columns: 1fr 2fr; gap: 15px;">
+        <div>
+            <label>Kod pocztowy</label>
+            <input type="text" id="postalCode" placeholder="00-000">
+        </div>
+        <div>
+            <label>Miasto</label>
+            <input type="text" id="city" placeholder="Warszawa">
+        </div>
+    </div>
+</div>
 
                 <h3>Dane karty</h3>
                 <div id="card-element"></div>
@@ -1353,18 +1353,29 @@ function closeModal() {
 
 function toggleInvoiceFields() {
     const checkbox = document.getElementById('wantInvoice');
-    const fields = document.getElementById('invoiceFields');
+    const invoiceFields = document.getElementById('invoiceFields');
     const companyInput = document.getElementById('companyName');
     const nipInput = document.getElementById('nip');
+    const streetInput = document.getElementById('street');
+    const postalInput = document.getElementById('postalCode');
+    const cityInput = document.getElementById('city');
     
     if (checkbox.checked) {
-        fields.style.display = 'block';
+        // Faktura - pokaż pola firmy i wymagaj wszystkiego
+        invoiceFields.style.display = 'block';
         companyInput.required = true;
         nipInput.required = true;
+        streetInput.required = true;
+        postalInput.required = true;
+        cityInput.required = true;
     } else {
-        fields.style.display = 'none';
+        // Osoba prywatna - ukryj pola firmy i nie wymagaj adresu
+        invoiceFields.style.display = 'none';
         companyInput.required = false;
         nipInput.required = false;
+        streetInput.required = false;
+        postalInput.required = false;
+        cityInput.required = false;
     }
 }
 
@@ -1387,6 +1398,9 @@ function showStep(step) {
     currentStep = step;
     
     if (step === 3) {
+        const nameFromStep2 = document.getElementById('fullName').value;
+        document.getElementById('billingName').value = nameFromStep2;
+
         setupStripePayment();
         updatePaymentSummary();
     }
@@ -1489,13 +1503,10 @@ async function handlePayment() {
     document.getElementById('button-text').style.display = 'none';
     document.getElementById('spinner').style.display = 'inline';
     
-    const phone = document.getElementById('phone').value;
-    const street = document.getElementById('street').value;
-    const postalCode = document.getElementById('postalCode').value;
-    const city = document.getElementById('city').value;
-    
-    if (!phone || !street || !postalCode || !city) {
-        alert('Wypełnij wszystkie wymagane pola do faktury');
+// Walidacja tylko imienia (reszta opcjonalna lub zależna od checkboxa faktury)
+    const billingName = document.getElementById('billingName').value;
+    if (!billingName) {
+    alert('Podaj imię i nazwisko');
         button.disabled = false;
         document.getElementById('button-text').style.display = 'inline';
         document.getElementById('spinner').style.display = 'none';
@@ -1506,9 +1517,8 @@ async function handlePayment() {
             payment_method: {
             card: cardElement,
             billing_details: {
-                name: document.getElementById('fullName').value,
+                name: document.getElementById('billingName').value,
                 email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
                 address: {
                     line1: document.getElementById('street').value,
                     postal_code: document.getElementById('postalCode').value,
@@ -1555,10 +1565,10 @@ async function submitOrder(paymentIntentId) {
             birthPlace: document.getElementById('birthPlace').value
         },
         billingInfo: {
-            phone: document.getElementById('phone').value,
-            street: document.getElementById('street').value,
-            postalCode: document.getElementById('postalCode').value,
-            city: document.getElementById('city').value,
+            name: document.getElementById('billingName').value,
+            street: document.getElementById('street').value || null,
+            postalCode: document.getElementById('postalCode').value || null,
+            city: document.getElementById('city').value || null,
             wantInvoice: document.getElementById('wantInvoice').checked,
             companyName: document.getElementById('companyName').value || null,
             nip: document.getElementById('nip').value || null
