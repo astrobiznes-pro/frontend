@@ -1627,12 +1627,16 @@ async function applyDiscountCode() {
     messageDiv.style.color = '#b8b8b8';
     
     try {
+        // Przelicz aktualną cenę
+        const service = servicesData[currentService];
+        const currentPrice = selectedDelivery === 'standard' ? service.standardPrice : service.expressPrice;
+        
         const response = await fetch(`${API_URL}/validate-discount`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 
                 discountCode: code,
-                originalPrice: selectedPrice
+                originalPrice: currentPrice
             })
         });
         
