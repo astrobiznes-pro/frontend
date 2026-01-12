@@ -1013,6 +1013,21 @@
     </p>
 </div>
 
+<!-- Discount Code -->
+<div style="margin-bottom: 20px;">
+    <label style="display: block; margin-bottom: 5px; color: #b8b8b8;">
+        Kod rabatowy (opcjonalnie)
+    </label>
+    <input 
+        type="text" 
+        id="discountCode" 
+        placeholder="Wpisz kod rabatowy"
+        style="width: 100%; padding: 12px; background: #2a2a2a; border: 1px solid #3a3a3a; border-radius: 8px; color: #f5f5f5;"
+    >
+</div>
+
+<!-- Stripe Card Element -->
+ 
 <div id="card-element"></div>
 <div id="card-errors" role="alert"></div>
 
@@ -1439,10 +1454,15 @@ async function setupStripePayment() {
     const price = selectedDelivery === 'standard' ? service.standardPrice : service.expressPrice;
     
     try {
+        const discountCode = document.getElementById('discountCode').value.trim();
+
         const response = await fetch(`${API_URL}/create-payment-intent`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ amount: price })
+            body: JSON.stringify({ 
+                amount: price,
+                discountCode: discountCode || null
+            })
         });
         
         const data = await response.json();
