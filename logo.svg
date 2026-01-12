@@ -1,0 +1,36 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle (opcjonalnie) -->
+  <circle cx="100" cy="100" r="95" fill="#0d0d0d" stroke="#d4a574" stroke-width="2"/>
+  
+  <!-- Briefcase (aktówka) -->
+  <g transform="translate(100, 100)">
+    <!-- Main body -->
+    <rect x="-35" y="-15" width="70" height="45" rx="3" fill="#d4a574"/>
+    
+    <!-- Handle -->
+    <path d="M -15,-15 Q -15,-25 0,-25 Q 15,-25 15,-15" 
+          stroke="#d4a574" stroke-width="3" fill="none" stroke-linecap="round"/>
+    
+    <!-- Lock -->
+    <rect x="-3" y="5" width="6" height="8" rx="1" fill="#0d0d0d"/>
+    <circle cx="0" cy="9" r="2" fill="#d4a574"/>
+  </g>
+  
+  <!-- Star 1 (top center) -->
+  <g transform="translate(100, 45)">
+    <path d="M 0,-10 L 2.5,-2.5 L 10,-2.5 L 4,3 L 6,10 L 0,5 L -6,10 L -4,3 L -10,-2.5 L -2.5,-2.5 Z" 
+          fill="#d4a574"/>
+  </g>
+  
+  <!-- Star 2 (bottom left) -->
+  <g transform="translate(65, 155)">
+    <path d="M 0,-8 L 2,-2 L 8,-2 L 3,2 L 5,8 L 0,4 L -5,8 L -3,2 L -8,-2 L -2,-2 Z" 
+          fill="#d4a574"/>
+  </g>
+  
+  <!-- Star 3 (bottom right) -->
+  <g transform="translate(135, 155)">
+    <path d="M 0,-8 L 2,-2 L 8,-2 L 3,2 L 5,8 L 0,4 L -5,8 L -3,2 L -8,-2 L -2,-2 Z" 
+          fill="#d4a574"/>
+  </g>
+</svg>
