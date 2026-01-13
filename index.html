@@ -1048,8 +1048,6 @@
     <p style="font-size: 1.4rem; color: var(--gold); margin: 15px 0 0 0; padding-top: 15px; border-top: 1px solid var(--light-gray);"><strong>Razem: <span id="summaryFinal"></span></strong></p>
 </div>
 
-<button id="submit-payment" class="btn" style="margin-top: 30px;">
-
                 <button id="submit-payment" class="btn" style="margin-top: 30px;">
                     <span id="button-text">Zapłać i zamów</span>
                     <span id="spinner" style="display: none;">⏳ Przetwarzanie...</span>
@@ -1349,7 +1347,7 @@ function closeModal() {
     showStep(1);
 }
 
-function toggleInvoiceFields() {
+async function toggleInvoiceFields() {
     const checkbox = document.getElementById('wantInvoice');
     const invoiceFields = document.getElementById('invoiceFields');
     const companyInput = document.getElementById('companyName');
@@ -1378,6 +1376,7 @@ function toggleInvoiceFields() {
         // Zaktualizuj summary po zmianie VAT
     if (currentStep === 3) {
         updatePaymentSummary();
+        await recreatePaymentIntent(); 
     }
 }
 
@@ -1513,6 +1512,27 @@ async function setupStripePayment() {
     }
 }
 
+async function recreatePaymentIntent() {
+    const priceDetails = calculateFinalPrice();
+    
+    try {
+        const response = await fetch(`${API_URL}/create-payment-intent`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                amount: priceDetails.finalPrice
+            })
+        });
+        
+        const data = await response.json();
+        clientSecret = data.clientSecret;  // Zastąp stary clientSecret!
+        
+        console.log('Payment intent updated:', priceDetails.finalPrice, 'PLN');
+    } catch (error) {
+        console.error('Error recreating payment intent:', error);
+    }
+}
+
 function updatePaymentSummary() {
     const service = servicesData[currentService];
     const deliveryText = selectedDelivery === 'standard' ? 'Standard (24h)' : 'Ekspres (2h)';
@@ -1539,6 +1559,18 @@ function updatePaymentSummary() {
 }
 
 async function handlePayment() {
+    // DEBUG - sprawdź kwotę PRZED płatnością
+    const priceDetails = calculateFinalPrice();
+    console.log('=== PAYMENT DEBUG ===');
+    console.log('Kwota do pobrania:', priceDetails.finalPrice, 'PLN');
+    console.log('Cena bazowa:', priceDetails.basePrice, 'PLN');
+    console.log('VAT:', priceDetails.vatAmount, 'PLN');
+    console.log('Rabat zastosowany:', priceDetails.hasDiscount);
+    console.log('====================');
+    
+    // Odtwórz payment intent z aktualną ceną (na wszelki wypadek!)
+    await recreatePaymentIntent();
+
     const button = document.getElementById('submit-payment');
     button.disabled = true;
     document.getElementById('button-text').style.display = 'none';
@@ -1694,6 +1726,8 @@ async function applyDiscountCode() {
             
             // Zaktualizuj summary
             updatePaymentSummary();
+
+            await recreatePaymentIntent();
         } else {
             appliedDiscount = false;
             discountedPrice = null;
