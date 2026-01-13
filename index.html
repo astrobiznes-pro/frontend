@@ -1628,7 +1628,10 @@ async function submitOrder(paymentIntentId) {
         service: currentService,
         serviceTitle: service.title,
         delivery: selectedDelivery,
-        price: price,
+        price: priceDetails.finalPrice,
+        originalPrice: selectedDelivery === 'standard' ? service.standardPrice : service.expressPrice,  // ← Dla info
+        discountApplied: priceDetails.hasDiscount,  // ← Czy był rabat
+        vatIncluded: priceDetails.hasVAT,  // ← Czy VAT
         paymentIntentId: paymentIntentId,
         personalInfo: {
             name: document.getElementById('fullName').value,
