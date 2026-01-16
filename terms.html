@@ -24,7 +24,6 @@
             --text-gray: #b8b8b8;
             --gold: #d4a574;
             --white: #f5f5f5;
-            --red: #ff6b6b;
         }
 
         body {
@@ -92,24 +91,21 @@
             color: var(--white);
         }
 
-        .highlight-box {
+        .info-box {
             background: var(--medium-gray);
-            padding: 30px;
-            border-left: 4px solid var(--gold);
-            margin: 30px 0;
+            padding: 25px;
+            border-left: 3px solid var(--gold);
+            margin: 25px 0;
+            font-size: 0.95rem;
         }
 
-        .warning-box {
-            background: rgba(255, 107, 107, 0.1);
-            border: 3px solid var(--red);
-            padding: 30px;
-            margin: 30px 0;
+        .info-box p:last-child {
+            margin-bottom: 0;
         }
 
-        .warning-box h3 {
-            color: var(--red);
-            font-size: 1.5rem;
-            margin-top: 0;
+        .info-box ul,
+        .info-box ol {
+            margin-bottom: 0;
         }
 
         a {
@@ -138,159 +134,166 @@
             background: var(--white);
             color: var(--black);
         }
+
+        .section-intro {
+            color: var(--text-gray);
+            font-size: 1.05rem;
+            margin-bottom: 30px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Regulamin</h1>
-        <p class="subtitle">Ostatnia aktualizacja: 11 stycznia 2026</p>
+        <p class="subtitle">Ostatnia aktualizacja: 16 stycznia 2026</p>
 
-        <div class="highlight-box">
-            <p><strong>Witaj w AstroBiznes.Pro.</strong> Regulamin określa zasady korzystania z naszych usług. Przeczytaj uważnie - w szczególności sekcje o wyłączeniu odpowiedzialności i wykorzystaniu sztucznej inteligencji.</p>
-        </div>
+        <h2>§1 POSTANOWIENIA OGÓLNE</h2>
+        
+        <h3>1.1 Zakres Regulaminu</h3>
+        <p>Niniejszy Regulamin określa zasady korzystania z serwisu <strong>AstroBiznes.Pro</strong> dostępnego pod adresem astrobiznes.pro oraz świadczenia usług drogą elektroniczną polegających na generowaniu spersonalizowanych analiz astrologicznych biznesowych.</p>
 
-        <h2>§1 Definicje</h2>
+        <h3>1.2 Definicje</h3>
         <ul>
-            <li><strong>Usługodawca:</strong> [NAZWA_TWOJEJ_FIRMY], NIP: [TWÓJ_NIP], Adres: [TWÓJ_ADRES], Email: kontakt@astrobiznes.pro</li>
-            <li><strong>Klient:</strong> osoba fizyczna, osoba prawna lub jednostka organizacyjna nieposiadająca osobowości prawnej, która składa Zamówienie</li>
-            <li><strong>Usługa:</strong> analiza astrologiczna generowana przez sztuczną inteligencję Claude (Anthropic) i wysyłana do Klienta drogą elektroniczną</li>
-            <li><strong>Zamówienie:</strong> oświadczenie woli Klienta zmierzające do zawarcia Umowy</li>
-            <li><strong>Umowa:</strong> umowa o świadczenie usług zawierana między Usługodawcą a Klientem</li>
-            <li><strong>Strona:</strong> serwis internetowy dostępny pod adresem astrobiznes.pro</li>
+            <li><strong>Usługodawca</strong> - [NAZWA_TWOJEJ_FIRMY], NIP: [TWÓJ_NIP], z siedzibą w [TWÓJ_ADRES]</li>
+            <li><strong>Klient</strong> - osoba fizyczna lub prawna korzystająca z Usług</li>
+            <li><strong>Usługa</strong> - wygenerowanie spersonalizowanej analizy astrologicznej biznesowej</li>
+            <li><strong>Analiza</strong> - tekst wygenerowany automatycznie przez sztuczną inteligencję Claude na podstawie danych Klienta</li>
+            <li><strong>Zamówienie</strong> - złożenie przez Klienta zapytania o Analizę wraz z dokonaniem płatności</li>
         </ul>
 
-        <h2>§2 Postanowienia Ogólne</h2>
+        <h3>1.3 Kontakt z Usługodawcą</h3>
+        <ul>
+            <li><strong>Email:</strong> kontakt@astrobiznes.pro</li>
+            <li><strong>Czas odpowiedzi:</strong> do 3 dni roboczych</li>
+        </ul>
+
+        <h2>§2 OFERTA I SKŁADANIE ZAMÓWIEŃ</h2>
+        
+        <h3>2.1 Dostępne Usługi</h3>
+        <p>Usługodawca oferuje następujące rodzaje analiz astrologicznych biznesowych:</p>
+        <ul>
+            <li><strong>Kariera i awans</strong> - strategia rozwoju zawodowego</li>
+            <li><strong>Startup i biznes</strong> - analiza dla przedsiębiorców</li>
+            <li><strong>Finanse i inwestycje</strong> - strategia finansowa</li>
+            <li><strong>Leadership i zarządzanie</strong> - rozwój przywództwa</li>
+            <li><strong>Misja i powołanie</strong> - odkrycie życiowej ścieżki</li>
+        </ul>
+
+        <h3>2.2 Ceny</h3>
+        <p>Ceny usług są podane w złotych polskich (PLN) i widoczne na stronie głównej. Ceny zawierają podatek VAT jeśli Klient zamawia fakturę VAT.</p>
+
+        <h3>2.3 Proces składania Zamówienia</h3>
         <ol>
-            <li>Regulamin określa zasady świadczenia usług drogą elektroniczną przez Usługodawcę.</li>
-            <li>Złożenie Zamówienia oznacza akceptację niniejszego Regulaminu.</li>
-            <li>Do korzystania z Usług niezbędne jest:
-                <ul>
-                    <li>Urządzenie z dostępem do internetu</li>
-                    <li>Aktywny adres email</li>
-                    <li>Przeglądarka internetowa z włączoną obsługą JavaScript</li>
-                </ul>
-            </li>
-            <li>Usługodawca nie ponosi odpowiedzialności za problemy techniczne po stronie Klienta.</li>
+            <li>Wybór rodzaju Usługi</li>
+            <li>Wypełnienie formularza z danymi osobowymi i odpowiedziami na pytania</li>
+            <li>Wybór opcji dostawy (Standard 24h lub Ekspres 2h)</li>
+            <li>Opcjonalnie: żądanie faktury VAT</li>
+            <li>Dokonanie płatności online (Stripe)</li>
+            <li>Otrzymanie potwierdzenia zamówienia na email</li>
         </ol>
 
-        <h2>§3 Zakres Usług</h2>
+        <h2>§3 REALIZACJA USŁUGI</h2>
         
-        <h3>3.1 Rodzaje usług</h3>
-        <p>Usługodawca świadczy następujące usługi:</p>
-        <ul>
-            <li><strong>Kariera i awans</strong> - analiza astrologiczna dotycząca rozwoju zawodowego</li>
-            <li><strong>Startup & Biznes</strong> - analiza astrologiczna dotycząca przedsiębiorczości</li>
-            <li><strong>Inwestycje</strong> - analiza astrologiczna dotycząca decyzji finansowych</li>
-            <li><strong>Leadership i zarządzanie</strong> - analiza astrologiczna dotycząca zarządzania</li>
-            <li><strong>Rozwój i misja</strong> - analiza astrologiczna dotycząca życiowego powołania</li>
-        </ul>
+        <h3>3.1 Wykorzystanie sztucznej inteligencji</h3>
+        <p>Analizy są generowane automatycznie przez sztuczną inteligencję <strong>Claude</strong> (produkt firmy Anthropic, Inc.), a nie przez człowieka-astrologa.</p>
+        
+        <div class="info-box">
+            <p><strong>Oznacza to, że:</strong></p>
+            <ul style="margin: 15px 0 0 20px;">
+                <li>Analiza jest wynikiem działania algorytmu AI, który przetwarza Twoje dane wejściowe (data urodzenia, miejsce urodzenia, odpowiedzi na pytania)</li>
+                <li>Jakość i trafność analizy zależy od możliwości technologii AI</li>
+                <li>AI może generować nieścisłości lub informacje wymagające weryfikacji</li>
+                <li>Twoje dane są przekazywane do serwerów Anthropic i Railway (oba w USA) w celu wygenerowania analizy</li>
+                <li>Proces generowania zajmuje 2-10 minut w zależności od złożoności</li>
+            </ul>
+            <p style="margin-top: 15px;"><strong>Składając zamówienie, wyrażasz zgodę na przetwarzanie Twoich danych przez sztuczną inteligencję Claude oraz przechowywanie na serwerach w USA.</strong></p>
+        </div>
 
-        <h3>3.2 Opcje dostawy</h3>
+        <h3>3.2 Czas realizacji</h3>
         <ul>
             <li><strong>Standard:</strong> dostawa do 24 godzin od potwierdzenia płatności</li>
             <li><strong>Ekspres:</strong> dostawa do 2 godzin od potwierdzenia płatności</li>
         </ul>
+        <p>Czas liczony jest od momentu prawidłowego zaksięgowania płatności. W przypadku problemów technicznych termin może ulec wydłużeniu - Klient zostanie o tym poinformowany.</p>
 
         <h3>3.3 Forma dostarczenia</h3>
-        <p>Analiza jest wysyłana wyłącznie w formie elektronicznej (email) w formacie tekstowym.</p>
+        <p>Analiza jest wysyłana wyłącznie w formie elektronicznej na adres email podany w Zamówieniu. Analiza jest przesyłana jako zaszyfrowany plik PDF (hasło: data urodzenia w formacie YYYYMMDD).</p>
 
-        <div class="warning-box">
-            <h3>⚠️ WYKORZYSTANIE SZTUCZNEJ INTELIGENCJI</h3>
-            <p><strong>BARDZO WAŻNE - PRZECZYTAJ UWAŻNIE:</strong></p>
-            <p>Analizy są generowane automatycznie przez sztuczną inteligencję <strong>Claude</strong> (produkt firmy Anthropic, Inc.). Nie są tworzone przez człowieka-astrologa.</p>
-            <p><strong>Oznacza to, że:</strong></p>
-            <ul>
-                <li>Analiza jest wynikiem działania algorytmu AI, który przetwarza Twoje dane wejściowe</li>
-                <li>Jakość i trafność analizy zależy od możliwości technologii AI</li>
-                <li>AI może popełniać błędy, generować nieścisłości lub nieprecyzyjne informacje</li>
-                <li>Usługodawca nie ma pełnej kontroli nad treścią generowaną przez AI</li>
-                <li>Twoje dane są przekazywane do serwerów Anthropic (USA) w celu wygenerowania analizy</li>
-            </ul>
-            <p><strong>Składając zamówienie, wyrażasz zgodę na przetwarzanie Twoich danych przez sztuczną inteligencję Claude.</strong></p>
-        </div>
-
-        <h2>§4 Składanie Zamówienia</h2>
-        <ol>
-            <li>Aby złożyć Zamówienie, Klient:
-                <ul>
-                    <li>Wybiera Usługę i opcję dostawy</li>
-                    <li>Wypełnia formularz z danymi osobowymi i pytaniami</li>
-                    <li>Podaje dane do płatności i faktury</li>
-                    <li>Dokonuje płatności przez Stripe</li>
-                </ul>
-            </li>
-            <li>Umowa zostaje zawarta w momencie potwierdzenia płatności przez Stripe.</li>
-            <li>Klient otrzymuje email z potwierdzeniem Zamówienia na podany adres email.</li>
-            <li>Usługodawca zastrzega sobie prawo do odmowy realizacji Zamówienia w przypadku:
-                <ul>
-                    <li>Podania nieprawdziwych danych</li>
-                    <li>Nieuregulowania płatności</li>
-                    <li>Wcześniejszego naruszenia Regulaminu przez Klienta</li>
-                </ul>
-            </li>
-        </ol>
-
-        <h2>§5 Ceny i Płatności</h2>
-        <ol>
-            <li>Wszystkie ceny na Stronie są podane w złotych polskich (PLN) i zawierają podatek VAT.</li>
-            <li>Płatności obsługiwane są przez <strong>Stripe</strong> - zewnętrzny operator płatności.</li>
-            <li>Dostępne metody płatności: karty płatnicze (Visa, Mastercard, American Express).</li>
-            <li>Usługodawca nie ma dostępu do danych karty płatniczej Klienta - są one przetwarzane wyłącznie przez Stripe.</li>
-            <li>Realizacja Zamówienia rozpoczyna się po pozytywnej autoryzacji płatności.</li>
-        </ol>
-
-        <h2>§6 Prawo Odstąpienia od Umowy</h2>
+        <h2>§4 PŁATNOŚĆ</h2>
         
-        <div class="highlight-box">
-            <p><strong>WAŻNE:</strong> Ze względu na charakter Usługi (treść cyfrowa dostarczana natychmiast), Klient <strong>NIE MA</strong> prawa do odstąpienia od Umowy po rozpoczęciu wykonywania Usługi.</p>
-        </div>
-
-        <ol>
-            <li>Zgodnie z art. 38 pkt 13 ustawy o prawach konsumenta, <strong>prawo odstąpienia od umowy nie przysługuje konsumentowi</strong> w przypadku umów o dostarczanie treści cyfrowych, które nie są zapisane na nośniku materialnym, jeżeli spełnianie świadczenia rozpoczęło się za wyraźną zgodą konsumenta przed upływem terminu do odstąpienia od umowy.</li>
-            <li>Składając Zamówienie, Klient wyraźnie żąda natychmiastowego rozpoczęcia świadczenia Usługi.</li>
-            <li>Klient <strong>traci prawo do odstąpienia od Umowy</strong> z chwilą dostarczenia analizy na podany adres email.</li>
-        </ol>
-
-        <h2>§7 Reklamacje</h2>
-        <ol>
-            <li>Klient ma prawo złożyć reklamację w następujących przypadkach:
-                <ul>
-                    <li>Analiza nie została dostarczona w zadeklarowanym czasie (24h lub 2h)</li>
-                    <li>Analiza nie została dostarczona w ogóle</li>
-                    <li>Wystąpił błąd techniczny uniemożliwiający korzystanie z Usługi</li>
-                </ul>
-            </li>
-            <li>Reklamacja powinna zawierać:
-                <ul>
-                    <li>Dane Klienta (imię, nazwisko, email)</li>
-                    <li>Numer zamówienia</li>
-                    <li>Opis problemu</li>
-                    <li>Żądanie Klienta</li>
-                </ul>
-            </li>
-            <li>Reklamację należy wysłać na adres: <strong>kontakt@astrobiznes.pro</strong></li>
-            <li>Usługodawca rozpatrzy reklamację w ciągu <strong>14 dni</strong> i poinformuje Klienta o wyniku.</li>
-            <li>W przypadku uzasadnionej reklamacji, Usługodawca:
-                <ul>
-                    <li>Ponownie wygeneruje i dostarczy analizę (jeśli to możliwe), lub</li>
-                    <li>Zwróci zapłaconą kwotę</li>
-                </ul>
-            </li>
-        </ol>
-
-        <h3>7.1 Podstawy odrzucenia reklamacji</h3>
-        <p>Reklamacja zostanie odrzucona, jeśli dotyczy:</p>
+        <h3>4.1 Formy płatności</h3>
+        <p>Płatności są przyjmowane wyłącznie online poprzez system <strong>Stripe</strong>. Dostępne metody:</p>
         <ul>
-            <li>Merytorycznej treści analizy (niezgodności z oczekiwaniami, subiektywnej oceny jakości)</li>
-            <li>Niezadowolenia z rezultatów działań podjętych na podstawie analizy</li>
-            <li>Błędów lub nieścisłości w analizie wygenerowanej przez AI (patrz §8 - wyłączenie odpowiedzialności)</li>
+            <li>Karta płatnicza (Visa, Mastercard, American Express)</li>
+            <li>Płatności mobilne (Apple Pay, Google Pay)</li>
         </ul>
 
-        <h2>§8 WYŁĄCZENIE ODPOWIEDZIALNOŚCI</h2>
+        <h3>4.2 Moment zapłaty</h3>
+        <p>Płatność jest wymagana przed rozpoczęciem realizacji Zamówienia. Usługa jest realizowana dopiero po pozytywnym zaksięgowaniu płatności.</p>
 
-        <div class="warning-box">
-            <h3>⚠️ PRZECZYTAJ TO BARDZO UWAŻNIE ⚠️</h3>
-            <p><strong>Poniższe postanowienia mają kluczowe znaczenie. Składając Zamówienie, akceptujesz pełne wyłączenie odpowiedzialności Usługodawcy.</strong></p>
+        <h3>4.3 Kody rabatowe</h3>
+        <p>Usługodawca może oferować kody rabatowe. Warunki ich stosowania są określane indywidualnie dla każdego kodu. Kod rabatowy należy wprowadzić podczas składania Zamówienia.</p>
+
+        <h3>4.4 Faktury VAT</h3>
+        <p>Klient może zażądać wystawienia faktury VAT poprzez zaznaczenie odpowiedniej opcji i podanie danych firmowych (nazwa firmy, NIP, adres) podczas składania Zamówienia.</p>
+
+        <h2>§5 PRAWO ODSTĄPIENIA OD UMOWY</h2>
+        
+        <h3>5.1 Konsument (osoba fizyczna nieprowadząca działalności)</h3>
+        <p>Zgodnie z art. 38 pkt 1 ustawy o prawach konsumenta, <strong>konsument nie ma prawa do odstąpienia od umowy</strong> o dostarczanie treści cyfrowych, które nie są zapisane na nośniku materialnym, jeżeli spełnianie świadczenia rozpoczęło się za wyraźną zgodą konsumenta przed upływem terminu do odstąpienia od umowy.</p>
+        
+        <div class="info-box">
+            <p><strong>Składając Zamówienie jako konsument, wyrażasz zgodę na natychmiastowe rozpoczęcie świadczenia usługi (generowanie analizy) i tym samym rezygnujesz z prawa do odstąpienia od umowy.</strong></p>
+        </div>
+
+        <h3>5.2 Przedsiębiorca</h3>
+        <p>Przedsiębiorcy nie przysługuje prawo odstąpienia od umowy zawartej na odległość.</p>
+
+        <h2>§6 REKLAMACJE</h2>
+        
+        <h3>6.1 Podstawy reklamacji</h3>
+        <p>Reklamacje mogą być składane wyłącznie w następujących przypadkach:</p>
+        <ul>
+            <li><strong>Niedostarczenie analizy</strong> - mimo prawidłowej płatności i upływu deklarowanego czasu realizacji</li>
+            <li><strong>Problemy techniczne</strong> - plik PDF nie otwiera się, jest uszkodzony lub zaszyfrowany nieprawidłowym hasłem</li>
+            <li><strong>Opóźnienie przekraczające</strong> deklarowany czas realizacji o więcej niż 50%</li>
+        </ul>
+
+        <h3>6.2 Wyłączenie możliwości reklamacji</h3>
+        <p><strong>NIE podlegają reklamacji:</strong></p>
+        <ul>
+            <li>Treść analizy (jej jakość, trafność, szczegółowość)</li>
+            <li>Subiektywna ocena wartości analizy</li>
+            <li>Niezgodność analizy z oczekiwaniami Klienta</li>
+            <li>Decyzje podjęte na podstawie analizy</li>
+        </ul>
+
+        <h3>6.3 Sposób złożenia reklamacji</h3>
+        <p>Reklamację należy złożyć w formie emaila na adres: <strong>kontakt@astrobiznes.pro</strong></p>
+        <p>Reklamacja powinna zawierać:</p>
+        <ul>
+            <li>Numer zamówienia</li>
+            <li>Opis problemu</li>
+            <li>Żądanie Klienta (ponowne wygenerowanie, zwrot środków)</li>
+        </ul>
+
+        <h3>6.4 Rozpatrzenie reklamacji</h3>
+        <p>Usługodawca rozpatruje reklamację w ciągu <strong>14 dni</strong> od jej otrzymania i informuje Klienta o wyniku drogą elektroniczną.</p>
+
+        <h2>§7 POLITYKA ZWROTÓW</h2>
+        
+        <p>Zwrot płatności jest możliwy wyłącznie w przypadku:</p>
+        <ul>
+            <li>Niedostarczenia analizy mimo prawidłowej płatności</li>
+            <li>Poważnych problemów technicznych uniemożliwiających dostarczenie analizy</li>
+            <li>Uznania reklamacji (§6)</li>
+        </ul>
+        <p>Zwrot następuje na rachunek/kartę, z której dokonano płatności, w ciągu 14 dni od uznania reklamacji.</p>
+
+        <h2>§8 WYŁĄCZENIE ODPOWIEDZIALNOŚCI</h2>
+        
+        <div class="info-box">
+            <p><strong>Poniższe postanowienia mają kluczowe znaczenie. Składając Zamówienie, akceptujesz pełne wyłączenie odpowiedzialności Usługodawcy za decyzje podjęte na podstawie analizy.</strong></p>
         </div>
 
         <h3>8.1 Charakter Usługi</h3>
@@ -301,113 +304,114 @@
                     <li>Porady finansowej, inwestycyjnej lub ekonomicznej</li>
                     <li>Porady prawnej</li>
                     <li>Porady medycznej lub psychologicznej</li>
-                    <li>Porady zawodowej lub biznesowej</li>
-                    <li>Żadnej formy profesjonalnego doradztwa</li>
+                    <li>Porady zawodowej świadczonej przez licencjonowanego doradcę</li>
+                    <li>Gwarancji sukcesu lub określonych rezultatów</li>
                 </ul>
             </li>
-            <li>Usługodawca <strong>NIE GWARANTUJE</strong>:
-                <ul>
-                    <li>Trafności, dokładności ani kompletności analiz</li>
-                    <li>Osiągnięcia konkretnych rezultatów biznesowych, zawodowych lub osobistych</li>
-                    <li>Że działania podjęte na podstawie analizy przyniosą oczekiwane efekty</li>
-                    <li>Bezbłędności treści generowanych przez sztuczną inteligencję</li>
-                </ul>
-            </li>
+            <li>Przed podjęciem jakichkolwiek decyzji biznesowych, finansowych, prawnych czy zdrowotnych należy skonsultować się z odpowiednim specjalistą.</li>
         </ol>
 
-        <h3>8.2 Pełne wyłączenie odpowiedzialności</h3>
-        <p><strong>W MAKSYMALNYM ZAKRESIE DOZWOLONYM PRZEZ PRAWO:</strong></p>
+        <h3>8.2 Wyłączenie odpowiedzialności za treść</h3>
         <ol>
-            <li>Usługodawca <strong>NIE PONOSI ODPOWIEDZIALNOŚCI</strong> za:
+            <li>Analiza jest generowana automatycznie przez AI. Usługodawca <strong>nie odpowiada za:</strong>
                 <ul>
-                    <li>Decyzje podjęte przez Klienta na podstawie analizy</li>
-                    <li>Skutki działań lub zaniechań Klienta wynikające z analizy</li>
-                    <li>Straty finansowe, zawodowe, biznesowe lub osobiste poniesione przez Klienta</li>
-                    <li>Błędy, nieścisłości lub nieprawidłowości w treści wygenerowanej przez AI</li>
-                    <li>Szkody pośrednie, wtórne, przypadkowe lub następcze</li>
-                    <li>Utratę zysków, szans biznesowych lub reputacji</li>
+                    <li>Trafność, dokładność lub kompletność analizy</li>
+                    <li>Błędy, nieścisłości lub nieaktualne informacje w analizie</li>
+                    <li>Jakość literacką, stylistyczną lub merytoryczną analizy</li>
                 </ul>
             </li>
-            <li><strong>Klient przyjmuje do wiadomości i akceptuje</strong>, że:
-                <ul>
-                    <li>Analizy są wynikiem działania algorytmu AI, a nie człowieka-eksperta</li>
-                    <li>Sztuczna inteligencja może popełniać błędy i generować nieprawidłowe informacje</li>
-                    <li>Wszelkie decyzje podejmuje na własną odpowiedzialność i ryzyko</li>
-                    <li>Przed podjęciem istotnych decyzji powinien skonsultować się z profesjonalnymi doradcami (prawnikami, księgowymi, doradcami finansowymi, lekarzami)</li>
-                </ul>
-            </li>
-            <li>Całkowita odpowiedzialność Usługodawcy, jeśli w ogóle przysługuje, jest <strong>OGRANICZONA</strong> do kwoty zapłaconej przez Klienta za konkretną Usługę.</li>
+            <li>Analiza odzwierciedla algorytmiczne przetworzenie danych przez AI, a nie opinię lub doświadczenie człowieka.</li>
         </ol>
 
-        <h3>8.3 Decyzje Klienta</h3>
-        <p><strong>Klient oświadcza i potwierdza, że:</strong></p>
+        <h3>8.3 Wyłączenie odpowiedzialności za skutki</h3>
+        <p><strong>Usługodawca w żadnym wypadku nie ponosi odpowiedzialności za:</strong></p>
         <ul>
-            <li>Rozumie, że analizy mają charakter orientacyjny i nie są wiążące</li>
-            <li>Nie podejmie istotnych decyzji życiowych wyłącznie na podstawie analizy</li>
-            <li>Przed podjęciem ważnych decyzji skonsultuje się z profesjonalnymi doradcami</li>
-            <li>Ponosi pełną odpowiedzialność za swoje decyzje i ich skutki</li>
-            <li>Nie będzie dochodzić roszczeń od Usługodawcy z tytułu decyzji podjętych na podstawie analizy</li>
+            <li>Decyzje podjęte przez Klienta na podstawie analizy</li>
+            <li>Straty finansowe poniesione w wyniku zastosowania się do treści analizy</li>
+            <li>Szkody wynikłe z działań lub zaniechań podjętych pod wpływem analizy</li>
+            <li>Utracone korzyści lub szanse biznesowe</li>
+            <li>Konsekwencje prawne, zdrowotne lub osobiste decyzji podjętych na podstawie analizy</li>
         </ul>
 
-        <h2>§9 Własność Intelektualna</h2>
-        <ol>
-            <li>Analiza wygenerowana dla Klienta pozostaje własnością Usługodawcy.</li>
-            <li>Klient otrzymuje niewyłączną, nieprzenoszalną licencję na korzystanie z analizy wyłącznie do celów osobistych.</li>
-            <li>Klient <strong>NIE MOŻE</strong>:
-                <ul>
-                    <li>Rozpowszechniać analizy publicznie</li>
-                    <li>Sprzedawać lub komercjalizować otrzymanej analizy</li>
-                    <li>Modyfikować lub tworzyć dzieł pochodnych</li>
-                    <li>Usuwać oznaczeń praw autorskich</li>
-                </ul>
-            </li>
-        </ol>
+        <h3>8.4 Własna odpowiedzialność Klienta</h3>
+        <p>Klient ponosi pełną odpowiedzialność za wszelkie decyzje podjęte na podstawie otrzymanej analizy. Analiza ma charakter pomocniczy i nie może stanowić jedynej podstawy podejmowania istotnych decyzji życiowych czy biznesowych.</p>
 
-        <h2>§10 Ochrona Danych Osobowych</h2>
-        <p>Szczegółowe informacje o przetwarzaniu danych osobowych znajdują się w <a href="privacy.html">Polityce Prywatności</a>.</p>
+        <h2>§9 OCHRONA DANYCH OSOBOWYCH</h2>
+        
+        <p>Szczegółowe zasady przetwarzania danych osobowych określa <a href="privacy.html">Polityka Prywatności</a>. Kluczowe informacje:</p>
+        
+        <h3>9.1 Administrator danych</h3>
+        <p>Administratorem danych jest Usługodawca: [NAZWA_FIRMY], kontakt: kontakt@astrobiznes.pro</p>
 
-        <h2>§11 Postanowienia Końcowe</h2>
-        <ol>
-            <li>W sprawach nieuregulowanych Regulaminem stosuje się przepisy:
-                <ul>
-                    <li>Kodeksu cywilnego</li>
-                    <li>Ustawy o świadczeniu usług drogą elektroniczną</li>
-                    <li>Ustawy o prawach konsumenta</li>
-                    <li>Rozporządzenia RODO</li>
-                </ul>
-            </li>
-            <li>Prawem właściwym dla Umowy jest prawo polskie.</li>
-            <li>Wszelkie spory będą rozstrzygane przez sądy polskie właściwe dla siedziby Usługodawcy.</li>
-            <li>Usługodawca zastrzega sobie prawo do zmiany Regulaminu. O zmianach Klienci zostaną poinformowani z 14-dniowym wyprzedzeniem.</li>
-            <li>Zmiany nie dotyczą Umów zawartych przed datą wejścia w życie nowego Regulaminu.</li>
-        </ol>
-
-        <h2>§12 Pozasądowe Rozwiązywanie Sporów</h2>
-        <p>Klient będący konsumentem ma prawo skorzystać z pozasądowych sposobów rozpatrywania reklamacji i dochodzenia roszczeń:</p>
+        <h3>9.2 Zakres zbieranych danych</h3>
         <ul>
-            <li><strong>Mediacja:</strong> <a href="https://polubowne.uokik.gov.pl" target="_blank">polubowne.uokik.gov.pl</a></li>
-            <li><strong>Platforma ODR:</strong> <a href="https://ec.europa.eu/consumers/odr" target="_blank">ec.europa.eu/consumers/odr</a></li>
+            <li>Imię i nazwisko</li>
+            <li>Adres email</li>
+            <li>Data, godzina i miejsce urodzenia</li>
+            <li>Forma zwrotu (zaimki)</li>
+            <li>Odpowiedzi na pytania dotyczące sytuacji biznesowej</li>
+            <li>Dane do faktury (jeśli żądana): nazwa firmy, NIP, adres</li>
         </ul>
 
-        <h2>§13 Kontakt</h2>
-        <p><strong>Dane kontaktowe Usługodawcy:</strong></p>
+        <h3>9.3 Cel przetwarzania</h3>
+        <p>Dane są przetwarzane wyłącznie w celu realizacji zamówionej usługi (art. 6 ust. 1 lit. b RODO).</p>
+
+        <h3>9.4 Okres przechowywania</h3>
         <ul>
-            <li><strong>Nazwa:</strong> [NAZWA_TWOJEJ_FIRMY]</li>
-            <li><strong>NIP:</strong> [TWÓJ_NIP]</li>
-            <li><strong>Adres:</strong> [TWÓJ_ADRES]</li>
-            <li><strong>Email:</strong> kontakt@astrobiznes.pro</li>
+            <li><strong>60 dni</strong> od realizacji usługi - następnie dane osobowe są automatycznie anonimizowane</li>
+            <li><strong>5 lat</strong> - dane do faktury (wymóg prawa podatkowego)</li>
         </ul>
 
-        <div class="warning-box">
-            <h3>POTWIERDZENIE ZROZUMIENIA</h3>
+        <h3>9.5 Przekazywanie danych do USA</h3>
+        <p>Dane są przechowywane na serwerach Railway (USA) oraz przetwarzane przez Anthropic (USA) w celu wygenerowania analizy. Transfer odbywa się na podstawie standardowych klauzul umownych (SCC) i wymogów RODO.</p>
+
+        <h2>§10 WŁASNOŚĆ INTELEKTUALNA</h2>
+        
+        <h3>10.1 Prawa do analizy</h3>
+        <p>Wygenerowana analiza stanowi utwór w rozumieniu prawa autorskiego, którego współtwórcami są Anthropic (twórca Claude AI) oraz Usługodawca (jako zlecający i organizujący proces).</p>
+
+        <h3>10.2 Licencja dla Klienta</h3>
+        <p>Klient nabywa niewyłączną, nieprzenoszalną licencję na korzystanie z analizy <strong>wyłącznie do użytku osobistego lub wewnętrznego w firmie</strong>.</p>
+
+        <h3>10.3 Zakazy</h3>
+        <p>Klient <strong>NIE MOŻE</strong>:</p>
+        <ul>
+            <li>Dalej sprzedawać, odsprzedawać lub w inny sposób komercjalizować analizy</li>
+            <li>Udostępniać publicznie analizy w całości lub znaczących fragmentach</li>
+            <li>Wykorzystywać analizy do tworzenia konkurencyjnych usług</li>
+            <li>Usuwać informacji o źródle analizy (Usługodawca, Claude AI)</li>
+        </ul>
+
+        <h2>§11 POSTANOWIENIA KOŃCOWE</h2>
+        
+        <h3>11.1 Zmiany Regulaminu</h3>
+        <p>Usługodawca zastrzega sobie prawo do zmiany Regulaminu z ważnych przyczyn (zmiany prawne, technologiczne). Zmiany wchodzą w życie po 7 dniach od publikacji na stronie. Zamówienia złożone przed zmianą realizowane są na dotychczasowych zasadach.</p>
+
+        <h3>11.2 Prawo właściwe</h3>
+        <p>Prawem właściwym dla umów zawieranych w ramach Usługi jest prawo polskie.</p>
+
+        <h3>11.3 Rozstrzyganie sporów</h3>
+        <ul>
+            <li><strong>Konsumenci:</strong> mogą korzystać z pozasądowych sposobów rozpatrywania reklamacji i dochodzenia roszczeń (mediacja, arbitraż konsumencki). Lista podmiotów: <a href="https://www.uokik.gov.pl" target="_blank">uokik.gov.pl</a></li>
+            <li><strong>Przedsiębiorcy:</strong> spory rozstrzygane są przez sąd właściwy dla siedziby Usługodawcy</li>
+        </ul>
+
+        <h3>11.4 Klauzula salwatoryjna</h3>
+        <p>W przypadku stwierdzenia nieważności lub nieskuteczności któregokolwiek postanowienia Regulaminu, pozostałe postanowienia pozostają w mocy.</p>
+
+        <h2>§12 POTWIERDZENIE ZROZUMIENIA</h2>
+        
+        <div class="info-box">
             <p><strong>Składając zamówienie, potwierdzasz, że:</strong></p>
-            <ol>
+            <ol style="margin: 15px 0 0 20px;">
                 <li>Przeczytałeś/aś i zrozumiałeś/aś Regulamin w całości</li>
                 <li>Akceptujesz wykorzystanie sztucznej inteligencji do generowania analiz</li>
                 <li>Rozumiesz, że analizy mają charakter wyłącznie informacyjny i rozrywkowy</li>
-                <li>Akceptujesz pełne wyłączenie odpowiedzialności Usługodawcy</li>
+                <li>Akceptujesz pełne wyłączenie odpowiedzialności Usługodawcy za decyzje podjęte na podstawie analizy</li>
                 <li>Podejmujesz wszelkie decyzje na własną odpowiedzialność</li>
                 <li>Nie będziesz dochodzić roszczeń z tytułu decyzji podjętych na podstawie analizy</li>
+                <li>Zgadzasz się na przekazanie danych do USA (Railway, Anthropic) w celu realizacji usługi</li>
+                <li>Rozumiesz automatyczną anonimizację danych po 60 dniach</li>
             </ol>
         </div>
 
