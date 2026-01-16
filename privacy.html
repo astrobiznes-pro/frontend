@@ -91,18 +91,20 @@
             color: var(--white);
         }
 
-        .highlight-box {
+        .info-box {
             background: var(--medium-gray);
-            padding: 30px;
-            border-left: 4px solid var(--gold);
-            margin: 30px 0;
+            padding: 25px;
+            border-left: 3px solid var(--gold);
+            margin: 25px 0;
+            font-size: 0.95rem;
         }
 
-        .warning-box {
-            background: rgba(212, 165, 116, 0.1);
-            border: 2px solid var(--gold);
-            padding: 30px;
-            margin: 30px 0;
+        .info-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        .info-box ul {
+            margin-bottom: 0;
         }
 
         a {
@@ -131,15 +133,21 @@
             background: var(--white);
             color: var(--black);
         }
+
+        .section-intro {
+            color: var(--text-gray);
+            font-size: 1.05rem;
+            margin-bottom: 30px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Polityka Prywatności</h1>
-        <p class="subtitle">Ostatnia aktualizacja: 11 stycznia 2026</p>
+        <p class="subtitle">Ostatnia aktualizacja: 16 stycznia 2026</p>
 
-        <div class="highlight-box">
-            <p><strong>Dbamy o Twoją prywatność.</strong> Ten dokument wyjaśnia dokładnie, jak przetwarzamy Twoje dane osobowe zgodnie z RODO (Rozporządzenie o Ochronie Danych Osobowych). Przeczytaj uważnie - jesteśmy maksymalnie transparentni.</p>
+        <div class="info-box">
+            <p><strong>Dbamy o Twoją prywatność.</strong> Ten dokument wyjaśnia dokładnie, jak przetwarzamy Twoje dane osobowe zgodnie z RODO (Rozporządzenie o Ochronie Danych Osobowych).</p>
         </div>
 
         <h2>§1 Administrator Danych</h2>
@@ -162,12 +170,13 @@
             <li><strong>Data urodzenia</strong> - niezbędna do wygenerowania analizy astrologicznej</li>
             <li><strong>Godzina urodzenia</strong> (opcjonalnie) - zwiększa precyzję analizy</li>
             <li><strong>Miejsce urodzenia</strong> - niezbędne do obliczeń astrologicznych</li>
+            <li><strong>Zaimki/forma zwrotu</strong> - aby analiza była dla Ciebie komfortowa</li>
             <li><strong>Odpowiedzi na pytania</strong> - aby spersonalizować analizę do Twojej sytuacji</li>
         </ul>
 
         <h3>2.2 Dane do płatności i faktury</h3>
         <ul>
-            <li><strong>Dane karty płatniczej</strong> - przetwarzane WYŁĄCZNIE przez Stripe (nie mamy do nich dostępu!)</li>
+            <li><strong>Dane karty płatniczej</strong> - przetwarzane WYŁĄCZNIE przez Stripe (nie mamy do nich dostępu)</li>
             <li><strong>Adres (ulica, miasto, kod pocztowy)</strong> - jeśli zamawiasz fakturę VAT</li>
             <li><strong>Nazwa firmy i NIP</strong> - jeśli zamawiasz fakturę VAT</li>
         </ul>
@@ -185,33 +194,46 @@
 
         <h2>§3 Komu Przekazujemy Twoje Dane</h2>
         
-        <div class="warning-box">
-            <p><strong>⚠️ WAŻNE - TRANSPARENTNOŚĆ TECHNOLOGICZNA</strong></p>
-            <p>Aby świadczyć usługi, korzystamy z zaawansowanych narzędzi technologicznych. Twoje dane są przekazywane następującym podmiotom:</p>
-        </div>
+        <p class="section-intro">Aby świadczyć usługi, korzystamy z profesjonalnych narzędzi technologicznych. Twoje dane są przekazywane następującym zaufanym podmiotom, z którymi współpracujemy:</p>
 
-        <h3>3.1 Anthropic (Claude AI)</h3>
+        <h3>3.1 Railway (hosting infrastruktury)</h3>
+        <p><strong>Co to jest:</strong> Railway to platforma hostingowa dla aplikacji webowych.</p>
+        <p><strong>Co przechowujemy:</strong> Wszystkie dane zamówienia (imię, email, data urodzenia, miejsce urodzenia, odpowiedzi na pytania) oraz wygenerowana analiza.</p>
+        <p><strong>Gdzie:</strong> Serwery Railway znajdują się w <strong>Stanach Zjednoczonych (region us-west)</strong>.</p>
+        
+        <div class="info-box">
+            <p><strong>Transfer danych do USA:</strong></p>
+            <p>Zgodnie z wymogami RODO, przekazanie danych do USA wymaga odpowiednich zabezpieczeń. Railway stosuje standardowe klauzule umowne (SCC) zatwierdzone przez Komisję Europejską oraz odpowiednie środki techniczne i organizacyjne chroniące Twoje dane.</p>
+            <p>Railway spełnia standardy bezpieczeństwa SOC 2 Type II oraz ISO 27001.</p>
+        </div>
+        
+        <p><strong>Jak długo:</strong> Dane są przechowywane na serwerach Railway przez maksymalnie 60 dni od realizacji usługi (następnie automatycznie anonimizowane - patrz §4).</p>
+        <p><strong>Ich polityka:</strong> <a href="https://railway.app/legal/privacy" target="_blank">railway.app/legal/privacy</a></p>
+
+        <h3>3.2 Anthropic (Claude AI)</h3>
         <p><strong>Co to jest:</strong> Anthropic to amerykańska firma technologiczna, twórca sztucznej inteligencji Claude.</p>
-        <p><strong>Co przekazujemy:</strong> Twoje imię, datę urodzenia, miejsce urodzenia, godzinę urodzenia oraz odpowiedzi na pytania.</p>
+        <p><strong>Co przekazujemy:</strong> Twoje imię, datę urodzenia, miejsce urodzenia, godzinę urodzenia, zaimki oraz odpowiedzi na pytania.</p>
         <p><strong>Po co:</strong> Claude AI generuje Twoją spersonalizowaną analizę astrologiczną na podstawie tych danych.</p>
-        <p><strong>Gdzie trafiają dane:</strong> Serwery Anthropic w USA (zgodnie z Transfer Impact Assessment - dane są odpowiednio chronione).</p>
-        <p><strong>Jak długo:</strong> Anthropic przetwarza dane wyłącznie w celu wygenerowania analizy i nie przechowuje ich permanentnie zgodnie z ich polityką prywatności.</p>
+        <p><strong>Gdzie trafiają dane:</strong> Serwery Anthropic w USA.</p>
+        <p><strong>Jak długo:</strong> Anthropic przetwarza dane wyłącznie w celu wygenerowania analizy i nie przechowuje ich permanentnie zgodnie z ich polityką prywatności. Dane są usuwane po zakończeniu procesu generowania (zwykle kilka minut).</p>
         <p><strong>Ich polityka:</strong> <a href="https://www.anthropic.com/legal/privacy" target="_blank">anthropic.com/legal/privacy</a></p>
 
-        <h3>3.2 Stripe (płatności)</h3>
+        <h3>3.3 Stripe (płatności)</h3>
         <p><strong>Co to jest:</strong> Stripe to globalny operator płatności online.</p>
         <p><strong>Co przekazujemy:</strong> Imię i nazwisko, email, adres (jeśli podano), dane faktury (jeśli żądana).</p>
-        <p><strong>Dane karty:</strong> NIE MAMY do nich dostępu - są przetwarzane bezpośrednio przez Stripe zgodnie z najwyższymi standardami PCI-DSS.</p>
+        <p><strong>Dane karty:</strong> NIE MAMY do nich dostępu - są przetwarzane bezpośrednio przez Stripe zgodnie z najwyższymi standardami PCI-DSS Level 1.</p>
         <p><strong>Po co:</strong> Przetworzenie płatności i zapewnienie bezpieczeństwa transakcji.</p>
+        <p><strong>Gdzie:</strong> Stripe ma serwery w UE i USA, stosuje odpowiednie zabezpieczenia dla transferu międzynarodowego.</p>
         <p><strong>Ich polityka:</strong> <a href="https://stripe.com/privacy" target="_blank">stripe.com/privacy</a></p>
 
-        <h3>3.3 SendGrid (email)</h3>
+        <h3>3.4 SendGrid (email)</h3>
         <p><strong>Co to jest:</strong> SendGrid (Twilio) to usługa dostarczania emaili.</p>
-        <p><strong>Co przekazujemy:</strong> Twój adres email, imię oraz treść analizy.</p>
+        <p><strong>Co przekazujemy:</strong> Twój adres email, imię oraz treść analizy (w załączniku PDF zaszyfrowanym hasłem).</p>
         <p><strong>Po co:</strong> Wysłanie Ci emaila z potwierdzeniem zamówienia oraz emaila z gotową analizą.</p>
+        <p><strong>Gdzie:</strong> Serwery SendGrid w USA i UE.</p>
         <p><strong>Ich polityka:</strong> <a href="https://www.twilio.com/legal/privacy" target="_blank">twilio.com/legal/privacy</a></p>
 
-        <h3>3.4 Inne podmioty</h3>
+        <h3>3.5 Inne podmioty</h3>
         <p>Możemy przekazać dane:</p>
         <ul>
             <li><strong>Księgowości</strong> - jeśli prowadzimy księgowość zewnętrzną (wyłącznie dane do faktury)</li>
@@ -219,21 +241,45 @@
         </ul>
 
         <h2>§4 Jak Długo Przechowujemy Dane</h2>
+        
+        <h3>4.1 Automatyczna anonimizacja po 60 dniach</h3>
+        <p>Stosujemy zasadę minimalizacji danych zgodnie z RODO:</p>
+        
+        <div class="info-box">
+            <p><strong>Po 60 dniach od realizacji usługi automatycznie usuwamy:</strong></p>
+            <ul style="margin: 15px 0 0 20px;">
+                <li>Adres email</li>
+                <li>Datę urodzenia</li>
+                <li>Miejsce urodzenia</li>
+                <li>Godzinę urodzenia</li>
+                <li>Zaimki/formę zwrotu</li>
+                <li>Odpowiedzi na pytania</li>
+                <li>Treść wygenerowanej analizy</li>
+                <li>Payment Intent ID</li>
+            </ul>
+        </div>
+
+        <h3>4.2 Dane zachowywane dłużej (wymogi prawne)</h3>
+        <p>Ze względu na obowiązki podatkowe i rachunkowe zachowujemy <strong>przez 5 lat</strong>:</p>
         <ul>
-            <li><strong>Dane do analizy:</strong> 60 dni od wykonania usługi (lub do momentu żądania usunięcia)</li>
-            <li><strong>Dane do faktury:</strong> 5 lat (wymóg prawa podatkowego)</li>
-            <li><strong>Historia zamówień:</strong> 60 dni (dla obsługi reklamacji)</li>
+            <li>Numer zamówienia</li>
+            <li>Data transakcji</li>
+            <li>Kwota transakcji</li>
+            <li>Imię i nazwisko nabywcy</li>
+            <li>Rodzaj usługi</li>
+            <li><strong>Jeśli zamówiono fakturę VAT:</strong> nazwę firmy, NIP, adres</li>
         </ul>
-        <p><strong>Po upływie tego czasu dane są automatycznie usuwane z naszych systemów.</strong></p>
+        <p>To minimum wymagane przez polskie prawo podatkowe (ustawa o rachunkowości).</p>
+
+        <h3>4.3 Usunięcie na żądanie</h3>
+        <p>Możesz w każdej chwili zażądać usunięcia swoich danych. Usuniemy je niezwłocznie, z wyjątkiem danych które musimy zachować zgodnie z prawem (patrz punkt 4.2).</p>
 
         <h2>§5 Twoje Prawa (RODO)</h2>
         
-        <div class="highlight-box">
-            <p><strong>Masz pełną kontrolę nad swoimi danymi.</strong> Zgodnie z RODO przysługują Ci następujące prawa:</p>
-        </div>
+        <p class="section-intro">Masz pełną kontrolę nad swoimi danymi. Zgodnie z RODO przysługują Ci następujące prawa:</p>
 
         <h3>5.1 Prawo dostępu do danych</h3>
-        <p>Możesz w każdej chwili zapytać nas o to, jakie dane o Tobie przetwarzamy. Wyślemy Ci kopię.</p>
+        <p>Możesz w każdej chwili zapytać nas o to, jakie dane o Tobie przetwarzamy. Wyślemy Ci kopię w ciągu 30 dni.</p>
 
         <h3>5.2 Prawo do sprostowania</h3>
         <p>Jeśli Twoje dane są nieprawidłowe lub niekompletne - daj nam znać, poprawimy je.</p>
@@ -245,7 +291,7 @@
         <p>Możesz poprosić o zawieszenie przetwarzania danych (np. podczas wyjaśniania sporu).</p>
 
         <h3>5.5 Prawo do przenoszenia danych</h3>
-        <p>Możesz poprosić o przesłanie Twoich danych w formacie umożliwiającym przeniesienie ich do innego administratora.</p>
+        <p>Możesz poprosić o przesłanie Twoich danych w formacie umożliwiającym przeniesienie ich do innego administratora (JSON/CSV).</p>
 
         <h3>5.6 Prawo do sprzeciwu</h3>
         <p>Możesz w każdej chwili sprzeciwić się przetwarzaniu swoich danych (z zastrzeżeniem wykonania umowy).</p>
@@ -257,25 +303,27 @@
         <a href="https://uodo.gov.pl" target="_blank">uodo.gov.pl</a></p>
 
         <h3>5.8 Jak skorzystać z praw?</h3>
-        <p>Wyślij email na: <strong>kontakt@astrobiznes.pro</strong> z tematem "RODO - [nazwa prawa]".<br>
+        <p>Wyślij email na: <strong>kontakt@astrobiznes.pro</strong> z tematem "RODO - [nazwa prawa]" (np. "RODO - prawo dostępu").<br>
         Odpowiemy w ciągu <strong>30 dni</strong>.</p>
 
         <h2>§6 Bezpieczeństwo Danych</h2>
         <p>Stosujemy odpowiednie środki techniczne i organizacyjne, aby chronić Twoje dane:</p>
         <ul>
-            <li><strong>Szyfrowanie:</strong> Wszystkie dane przesyłane przez internet są szyfrowane (HTTPS/TLS)</li>
-            <li><strong>Hosting:</strong> Używamy profesjonalnych, zabezpieczonych serwerów (Railway.app)</li>
-            <li><strong>Dostęp:</strong> Dostęp do danych mają tylko upoważnione osoby</li>
+            <li><strong>Szyfrowanie transmisji:</strong> Wszystkie dane przesyłane przez internet są szyfrowane (HTTPS/TLS 1.3)</li>
+            <li><strong>Szyfrowanie PDF:</strong> Twoja analiza w PDF jest zaszyfrowana hasłem (data urodzenia w formacie YYYYMMDD)</li>
+            <li><strong>Hosting:</strong> Profesjonalne, zabezpieczone serwery Railway (SOC 2, ISO 27001)</li>
+            <li><strong>Dostęp:</strong> Dostęp do danych mają tylko upoważnione osoby (administratorzy systemu)</li>
             <li><strong>Backup:</strong> Regularne kopie zapasowe chronią przed utratą danych</li>
-            <li><strong>Płatności:</strong> Dane kart płatniczych są przetwarzane wyłącznie przez Stripe (standard PCI-DSS)</li>
+            <li><strong>Płatności:</strong> Dane kart płatniczych są przetwarzane wyłącznie przez Stripe (PCI-DSS Level 1)</li>
+            <li><strong>Automatyczne usuwanie:</strong> System automatycznie anonimizuje stare dane (60 dni)</li>
         </ul>
 
         <h2>§7 Cookies i Technologie Śledzące</h2>
-        <p><strong>Nie używamy cookies śledzących ani analitycznych.</strong></p>
+        <p><strong>Nie używamy cookies śledzących, analitycznych ani marketingowych.</strong></p>
         <p>Stripe może używać własnych cookies do przetwarzania płatności - szczegóły w ich polityce prywatności.</p>
 
         <h2>§8 Zmiany w Polityce Prywatności</h2>
-        <p>Możemy aktualizować tę politykę. O istotnych zmianach poinformujemy Cię emailem (jeśli mamy Twój adres) lub poprzez ogłoszenie na stronie.</p>
+        <p>Możemy aktualizować tę politykę w odpowiedzi na zmiany prawne lub technologiczne. O istotnych zmianach poinformujemy Cię emailem (jeśli mamy Twój adres) lub poprzez ogłoszenie na stronie.</p>
         <p><strong>Data ostatniej aktualizacji znajduje się na górze dokumentu.</strong></p>
 
         <h2>§9 Kontakt</h2>
@@ -286,7 +334,7 @@
         </ul>
         <p>Odpowiemy w ciągu 7 dni roboczych.</p>
 
-        <div class="highlight-box">
+        <div class="info-box">
             <p><strong>Twoja prywatność jest dla nas priorytetem.</strong> Jeśli masz jakiekolwiek wątpliwości - pytaj. Jesteśmy tu, aby pomóc.</p>
         </div>
 
