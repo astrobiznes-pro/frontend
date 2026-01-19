@@ -1519,12 +1519,15 @@ async function setupStripePayment() {
     }
     
     try {
-        // KROK 1: Stwórz elements BEZ clientSecret (na razie pusty)
-
+        console.log('🔧 Setting up Stripe Payment Element...');
+        
+        // Oblicz aktualną cenę (potrzebne dla amount)
         const priceDetails = calculateFinalPrice();
-
+        console.log('💰 Initial amount:', priceDetails.finalPrice, 'PLN');
+        
+        // KROK 1: Stwórz elements w trybie 'payment'
         elements = stripe.elements({
-            locale: 'pl',  // Polski!
+            locale: 'pl',
             mode: 'payment',
             amount: priceDetails.finalPrice * 100,  // w groszach
             currency: 'pln',
@@ -1541,9 +1544,13 @@ async function setupStripePayment() {
             }
         });
         
-        // KROK 2: Stwórz Payment Element (puste - czeka na payment intent)
+        console.log('✓ Elements created');
+        
+        // KROK 2: Stwórz Payment Element
         const paymentElement = elements.create('payment');
         paymentElement.mount('#payment-element');
+        
+        console.log('✓ Payment element mounted');
         
         // KROK 3: Error handling
         paymentElement.on('change', (event) => {
@@ -1555,10 +1562,26 @@ async function setupStripePayment() {
             }
         });
         
-        console.log('✓ Payment element ready (waiting for payment intent)');
+        console.log('✓ Error handling configured');
+        
+        // KROK 4: KRYTYCZNE - Dodaj event listener do przycisku
+        const submitButton = document.getElementById('submit-payment');
+        if (submitButton) {
+            // Usuń stare listenery (jeśli są)
+            const newButton = submitButton.cloneNode(true);
+            submitButton.parentNode.replaceChild(newButton, submitButton);
+            
+            // Dodaj nowy listener
+            newButton.addEventListener('click', handlePayment);
+            console.log('✓ Payment button listener attached');
+        } else {
+            console.error('❌ Submit button not found!');
+        }
+        
+        console.log('✅ Payment element ready');
         
     } catch (error) {
-        console.error('Setup error:', error);
+        console.error('❌ Setup error:', error);
         alert('Błąd inicjalizacji płatności. Spróbuj ponownie.');
     }
 }
