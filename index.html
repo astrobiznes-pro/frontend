@@ -1704,7 +1704,7 @@ async function handlePayment() {
         const intentData = await intentResponse.json();
         clientSecret = intentData.clientSecret;
         
-        console.log('✓ Payment intent created:', clientSecret);
+        console.log('✓ Payment intent created:');
         
         // Przekaż clientSecret do elements
         await elements.submit();
@@ -1741,9 +1741,8 @@ async function handlePayment() {
             throw new Error('Płatność nie powiodła się: ' + paymentIntent.status);
         }
         
-        console.log('✓ Payment successful:', paymentIntent.id);
+        console.log('✓ Payment successful:');
         console.log('✓ Amount charged:', paymentIntent.amount / 100, 'PLN');
-        console.log('✓ Currency:', paymentIntent.currency.toUpperCase());
 
         // ZAPIS ZAMÓWIENIA
         try {
