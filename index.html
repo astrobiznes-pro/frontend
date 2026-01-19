@@ -923,21 +923,12 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Forma zwrotu *</label>
-                        <div style="display: flex; flex-direction: column; gap: 10px;">
-                            <label style="font-weight: normal; cursor: pointer;">
-                                <input type="radio" name="pronouns" value="on" checked onchange="toggleCustomPronouns()">
-                                on (męska)
-                            </label>
-                            <label style="font-weight: normal; cursor: pointer;">
-                                <input type="radio" name="pronouns" value="ona" onchange="toggleCustomPronouns()">
-                                ona (żeńska)
-                            </label>
-                            <label style="font-weight: normal; cursor: pointer;">
-                                <input type="radio" name="pronouns" value="custom" onchange="toggleCustomPronouns()">
-                                inaczej
-                            </label>
-                        </div>
+                        <label for="pronounsSelect">Forma zwrotu *</label>
+                        <select id="pronounsSelect" required onchange="toggleCustomPronouns()">
+                            <option value="on">on (męska)</option>
+                            <option value="ona">ona (żeńska)</option>
+                            <option value="custom">inaczej</option>
+                        </select>
                         <input 
                             type="text" 
                             id="customPronouns" 
@@ -1749,11 +1740,11 @@ console.log('%c🌟 ASTROBIZNES.PRO 🌟', 'font-size: 24px; font-weight: bold; 
 console.log('Gwiazdy prowadzą. My pomagamy je odczytać. ⭐');
 
 function toggleCustomPronouns() {
-    const customRadio = document.querySelector('input[name="pronouns"][value="custom"]');
+    const select = document.getElementById('pronounsSelect');
     const customInput = document.getElementById('customPronouns');
     const counterContainer = document.getElementById('pronouns-count-container');
     
-    if (customRadio.checked) {
+    if (select.value === 'custom') {
         customInput.style.display = 'block';
         counterContainer.style.display = 'block';
         customInput.required = true;
@@ -1776,26 +1767,11 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function getPronounsValue() {
-    const selected = document.querySelector('input[name="pronouns"]:checked').value;
-    if (selected === 'custom') {
+    const select = document.getElementById('pronounsSelect');
+    if (select.value === 'custom') {
         return document.getElementById('customPronouns').value || 'osoba';
     }
-    return selected;
-}function toggleCustomPronouns() {
-    const customRadio = document.querySelector('input[name="pronouns"][value="custom"]');
-    const customInput = document.getElementById('customPronouns');
-    const counterContainer = document.getElementById('pronouns-count-container');
-    
-    if (customRadio.checked) {
-        customInput.style.display = 'block';
-        counterContainer.style.display = 'block';
-        customInput.required = true;
-    } else {
-        customInput.style.display = 'none';
-        counterContainer.style.display = 'none';
-        customInput.required = false;
-        customInput.value = '';
-    }
+    return select.value;
 }
 
 // Dodaj listener dla countera
