@@ -1096,6 +1096,7 @@ const STRIPE_KEY = 'pk_live_51So0sBEr4XypIDmPLIeH3SMrK0afzlS5fImkXMm9TLrzI9l6I2x
 
 const stripe = Stripe(STRIPE_KEY);
 let clientSecret;
+let elements;
 
 const servicesData = {
     career: {
@@ -1534,7 +1535,7 @@ async function setupStripePayment() {
         clientSecret = data.clientSecret;
         
         // KROK 2: Stwórz elements Z clientSecret (nowe API wymaga tego)
-        const elements = stripe.elements({
+        elements = stripe.elements({
             clientSecret: clientSecret,
             appearance: {
                 theme: 'night',
