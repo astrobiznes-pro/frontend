@@ -1412,7 +1412,6 @@ async function toggleInvoiceFields() {
         // Zaktualizuj summary po zmianie VAT
     if (currentStep === 3) {
         updatePaymentSummary();
-        await recreatePaymentIntent(); 
     }
 }
 
@@ -1519,24 +1518,10 @@ async function setupStripePayment() {
         return;
     }
     
-    const priceDetails = calculateFinalPrice();
-    
     try {
-        // KROK 1: Stwórz payment intent (potrzebujemy clientSecret)
-        const response = await fetch(`${API_URL}/create-payment-intent`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                amount: priceDetails.finalPrice
-            })
-        });
-        
-        const data = await response.json();
-        clientSecret = data.clientSecret;
-        
-        // KROK 2: Stwórz elements Z clientSecret (nowe API wymaga tego)
+        // KROK 1: Stwórz elements BEZ clientSecret (na razie pusty)
         elements = stripe.elements({
-            clientSecret: clientSecret,
+            locale: 'pl',  // Polski!
             appearance: {
                 theme: 'night',
                 variables: {
@@ -1550,17 +1535,11 @@ async function setupStripePayment() {
             }
         });
         
-        // KROK 3: Stwórz Payment Element (obsługuje karty, BLIK, Apple Pay, Google Pay)
-        const paymentElement = elements.create('payment', {
-            layout: {
-                type: 'tabs',
-                defaultCollapsed: false
-            }
-        });
-        
+        // KROK 2: Stwórz Payment Element (puste - czeka na payment intent)
+        const paymentElement = elements.create('payment');
         paymentElement.mount('#payment-element');
         
-        // KROK 4: Error handling
+        // KROK 3: Error handling
         paymentElement.on('change', (event) => {
             const displayError = document.getElementById('card-errors');
             if (event.error) {
@@ -1570,35 +1549,11 @@ async function setupStripePayment() {
             }
         });
         
-        // KROK 5: Setup payment button
-        document.getElementById('submit-payment').addEventListener('click', handlePayment);
-        
-        console.log('✓ Payment element ready');
+        console.log('✓ Payment element ready (waiting for payment intent)');
         
     } catch (error) {
         console.error('Setup error:', error);
         alert('Błąd inicjalizacji płatności. Spróbuj ponownie.');
-    }
-}
-
-async function recreatePaymentIntent() {
-    const priceDetails = calculateFinalPrice();
-    
-    try {
-        const response = await fetch(`${API_URL}/create-payment-intent`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                amount: priceDetails.finalPrice
-            })
-        });
-        
-        const data = await response.json();
-        clientSecret = data.clientSecret;  // Zastąp stary clientSecret!
-        
-        console.log('Payment intent updated:', priceDetails.finalPrice, 'PLN');
-    } catch (error) {
-        console.error('Error recreating payment intent:', error);
     }
 }
 
@@ -1628,11 +1583,6 @@ function updatePaymentSummary() {
 }
 
 async function handlePayment() {
-    console.log('=== HANDLE PAYMENT DEBUG ===');
-    console.log('elements:', elements);
-    console.log('clientSecret:', clientSecret);
-    console.log('============================');
-
     const button = document.getElementById('submit-payment');
     const buttonText = document.getElementById('button-text');
     const spinner = document.getElementById('spinner');
@@ -1642,10 +1592,9 @@ async function handlePayment() {
     spinner.style.display = 'inline';
     
     try {
-        // ===== KROK 1: WALIDACJA PRZED PŁATNOŚCIĄ =====
         console.log('=== PRE-PAYMENT VALIDATION ===');
         
-        // Sprawdź pronouns (krytyczne!)
+        // Sprawdź pronouns
         const pronouns = getPronounsValue();
         if (!pronouns) {
             throw new Error('Nie wybrano formy zwrotu');
@@ -1666,22 +1615,19 @@ async function handlePayment() {
         }
         console.log('✓ Email OK');
         
-        // Jeśli faktura - sprawdź pola firmowe
+        // Jeśli faktura - sprawdź pola
         const wantInvoice = document.getElementById('wantInvoice').checked;
         if (wantInvoice) {
-            const companyName = document.getElementById('companyName').value;
-            const nip = document.getElementById('nip').value;
-            const street = document.getElementById('street').value;
-            const city = document.getElementById('city').value;
-            const postalCode = document.getElementById('postalCode').value;
-            
-            if (!companyName || !nip || !street || !city || !postalCode) {
-                throw new Error('Wypełnij wszystkie pola faktury VAT');
+            const required = ['companyName', 'nip', 'street', 'city', 'postalCode'];
+            for (const fieldId of required) {
+                if (!document.getElementById(fieldId).value) {
+                    throw new Error('Wypełnij wszystkie pola faktury VAT');
+                }
             }
             console.log('✓ Invoice fields OK');
         }
         
-        // Sprawdź pytania serwisu
+        // Sprawdź pytania
         const service = servicesData[currentService];
         for (const q of service.questions) {
             const field = document.getElementById(q.id);
@@ -1691,25 +1637,39 @@ async function handlePayment() {
         }
         console.log('✓ Service questions OK');
         
-        // Oblicz i potwierdź cenę
+        // KROK KRYTYCZNY: Oblicz finalną cenę
         const priceDetails = calculateFinalPrice();
-        console.log('=== PAYMENT DETAILS ===');
-        console.log('Kwota do pobrania:', priceDetails.finalPrice, 'PLN');
-        console.log('Cena bazowa:', priceDetails.basePrice, 'PLN');
+        console.log('=== CREATING PAYMENT INTENT ===');
+        console.log('Amount:', priceDetails.finalPrice, 'PLN');
+        console.log('Base:', priceDetails.basePrice, 'PLN');
         console.log('VAT:', priceDetails.vatAmount, 'PLN');
-        console.log('Rabat:', priceDetails.hasDiscount);
-        console.log('======================');
+        console.log('Discount:', priceDetails.hasDiscount);
         
-        // Recreate payment intent ze wszystkimi danymi
-        await recreatePaymentIntent();
-        console.log('✓ Payment intent ready');
+        // STWÓRZ payment intent z finalną ceną
+        const intentResponse = await fetch(`${API_URL}/create-payment-intent`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                amount: priceDetails.finalPrice
+            })
+        });
         
-        console.log('=== VALIDATION COMPLETE - PROCESSING PAYMENT ===');
+        const intentData = await intentResponse.json();
+        clientSecret = intentData.clientSecret;
         
-        // ===== KROK 2: PŁATNOŚĆ =====
+        console.log('✓ Payment intent created:', clientSecret);
+        
+        // Przekaż clientSecret do elements
+        await elements.submit();
+        
+        console.log('=== PROCESSING PAYMENT ===');
+        
+        // PŁATNOŚĆ
         const {error, paymentIntent} = await stripe.confirmPayment({
             elements,
+            clientSecret: clientSecret,
             confirmParams: {
+                return_url: window.location.origin + '/success.html',
                 payment_method_data: {
                     billing_details: {
                         name: billingName,
@@ -1735,26 +1695,21 @@ async function handlePayment() {
         }
         
         console.log('✓ Payment successful:', paymentIntent.id);
+        console.log('✓ Amount charged:', paymentIntent.amount / 100, 'PLN');
+        console.log('✓ Currency:', paymentIntent.currency.toUpperCase());
         
-        // ===== KROK 3: ZAPIS ZAMÓWIENIA (z zabezpieczeniem) =====
+        // ZAPIS ZAMÓWIENIA
         try {
             await submitOrder(paymentIntent.id);
-            console.log('✓ Order saved successfully');
-            
-            // Sukces - pokaż potwierdzenie
-            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-            document.getElementById('successMessage').classList.add('active');
+            console.log('✓ Order saved');
             
         } catch (orderError) {
-            // KRYTYCZNY BŁĄD: Płatność OK, ale zapis się wywałał!
-            console.error('❌ CRITICAL: Payment succeeded but order save failed!');
+            console.error('❌ Order save failed!');
             console.error('Payment Intent ID:', paymentIntent.id);
-            console.error('Error:', orderError);
             
-            // Próba automatycznego refund
-            console.log('🔄 Attempting automatic refund...');
+            // Auto-refund
             try {
-                const refundResponse = await fetch(`${API_URL}/refund`, {
+                await fetch(`${API_URL}/refund`, {
                     method: 'POST',
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({
@@ -1763,37 +1718,27 @@ async function handlePayment() {
                     })
                 });
                 
-                if (refundResponse.ok) {
-                    console.log('✓ Refund successful');
-                    alert(
-                        'Wystąpił błąd techniczny podczas zapisywania zamówienia.\n\n' +
-                        'Twoja płatność została automatycznie zwrócona.\n\n' +
-                        'Spróbuj ponownie za chwilę lub skontaktuj się z nami: kontakt@astrobiznes.pro'
-                    );
-                } else {
-                    throw new Error('Refund failed');
-                }
+                alert(
+                    'Wystąpił błąd techniczny.\n\n' +
+                    'Twoja płatność została automatycznie zwrócona.\n\n' +
+                    'Spróbuj ponownie lub skontaktuj się: kontakt@astrobiznes.pro'
+                );
                 
             } catch (refundError) {
-                // Refund nie zadziałał - zapisz payment intent dla użytkownika
-                console.error('❌ Automatic refund failed:', refundError);
                 alert(
-                    '⚠️ WAŻNE - ZAPISZ TEN KOD!\n\n' +
-                    'Twoja płatność przeszła poprawnie, ale wystąpił błąd techniczny.\n\n' +
-                    'KOD PŁATNOŚCI:\n' + paymentIntent.id + '\n\n' +
-                    'Skopiuj ten kod i wyślij go na:\nkontakt@astrobiznes.pro\n\n' +
-                    'Przetworzymy Twoje zamówienie ręcznie w ciągu 24h.'
+                    '⚠️ ZAPISZ KOD:\n' + paymentIntent.id + '\n\n' +
+                    'Wyślij na: kontakt@astrobiznes.pro\n\n' +
+                    'Przetworzymy zamówienie w 24h.'
                 );
             }
             
-            throw orderError; // Re-throw żeby nie pokazywać success
+            throw orderError;
         }
         
     } catch (error) {
-        console.error('Payment flow error:', error);
+        console.error('Payment error:', error);
         alert('Błąd: ' + error.message);
         
-        // Reset UI
         button.disabled = false;
         buttonText.style.display = 'inline';
         spinner.style.display = 'none';
@@ -1958,7 +1903,6 @@ async function applyDiscountCode() {
             // Zaktualizuj summary
             updatePaymentSummary();
 
-            await recreatePaymentIntent();
         } else {
             appliedDiscount = false;
             discountedPrice = null;
