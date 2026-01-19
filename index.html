@@ -1609,62 +1609,170 @@ function updatePaymentSummary() {
 }
 
 async function handlePayment() {
-    // DEBUG - sprawdź kwotę PRZED płatnością
-    const priceDetails = calculateFinalPrice();
-    console.log('=== PAYMENT DEBUG ===');
-    console.log('Kwota do pobrania:', priceDetails.finalPrice, 'PLN');
-    console.log('Cena bazowa:', priceDetails.basePrice, 'PLN');
-    console.log('VAT:', priceDetails.vatAmount, 'PLN');
-    console.log('Rabat zastosowany:', priceDetails.hasDiscount);
-    console.log('====================');
-    
-    // Odtwórz payment intent z aktualną ceną (na wszelki wypadek!)
-    await recreatePaymentIntent();
-
     const button = document.getElementById('submit-payment');
-    button.disabled = true;
-    document.getElementById('button-text').style.display = 'none';
-    document.getElementById('spinner').style.display = 'inline';
+    const buttonText = document.getElementById('button-text');
+    const spinner = document.getElementById('spinner');
     
-// Walidacja tylko imienia (reszta opcjonalna lub zależna od checkboxa faktury)
-    const billingName = document.getElementById('billingName').value;
-    if (!billingName) {
-    alert('Podaj imię i nazwisko');
-        button.disabled = false;
-        document.getElementById('button-text').style.display = 'inline';
-        document.getElementById('spinner').style.display = 'none';
-        return;
-    }
+    button.disabled = true;
+    buttonText.style.display = 'none';
+    spinner.style.display = 'inline';
+    
     try {
-        const {error, paymentIntent} = await stripe.confirmCardPayment(clientSecret, {
-            payment_method: {
-            card: cardElement,
-            billing_details: {
-                name: document.getElementById('billingName').value,
-                email: document.getElementById('email').value,
-                address: {
-                    line1: document.getElementById('street').value,
-                    postal_code: document.getElementById('postalCode').value,
-                    city: document.getElementById('city').value,
-                    country: 'PL'
-                }
+        // ===== KROK 1: WALIDACJA PRZED PŁATNOŚCIĄ =====
+        console.log('=== PRE-PAYMENT VALIDATION ===');
+        
+        // Sprawdź pronouns (krytyczne!)
+        const pronouns = getPronounsValue();
+        if (!pronouns) {
+            throw new Error('Nie wybrano formy zwrotu');
+        }
+        console.log('✓ Pronouns:', pronouns);
+        
+        // Sprawdź billing name
+        const billingName = document.getElementById('billingName').value;
+        if (!billingName) {
+            throw new Error('Podaj imię i nazwisko do płatności');
+        }
+        console.log('✓ Billing name OK');
+        
+        // Sprawdź email
+        const email = document.getElementById('email').value;
+        if (!email) {
+            throw new Error('Podaj adres email');
+        }
+        console.log('✓ Email OK');
+        
+        // Jeśli faktura - sprawdź pola firmowe
+        const wantInvoice = document.getElementById('wantInvoice').checked;
+        if (wantInvoice) {
+            const companyName = document.getElementById('companyName').value;
+            const nip = document.getElementById('nip').value;
+            const street = document.getElementById('street').value;
+            const city = document.getElementById('city').value;
+            const postalCode = document.getElementById('postalCode').value;
+            
+            if (!companyName || !nip || !street || !city || !postalCode) {
+                throw new Error('Wypełnij wszystkie pola faktury VAT');
+            }
+            console.log('✓ Invoice fields OK');
+        }
+        
+        // Sprawdź pytania serwisu
+        const service = servicesData[currentService];
+        for (const q of service.questions) {
+            const field = document.getElementById(q.id);
+            if (!field.value) {
+                throw new Error(`Odpowiedz na pytanie: ${q.label}`);
             }
         }
-    });
+        console.log('✓ Service questions OK');
+        
+        // Oblicz i potwierdź cenę
+        const priceDetails = calculateFinalPrice();
+        console.log('=== PAYMENT DETAILS ===');
+        console.log('Kwota do pobrania:', priceDetails.finalPrice, 'PLN');
+        console.log('Cena bazowa:', priceDetails.basePrice, 'PLN');
+        console.log('VAT:', priceDetails.vatAmount, 'PLN');
+        console.log('Rabat:', priceDetails.hasDiscount);
+        console.log('======================');
+        
+        // Recreate payment intent ze wszystkimi danymi
+        await recreatePaymentIntent();
+        console.log('✓ Payment intent ready');
+        
+        console.log('=== VALIDATION COMPLETE - PROCESSING PAYMENT ===');
+        
+        // ===== KROK 2: PŁATNOŚĆ =====
+        const {error, paymentIntent} = await stripe.confirmPayment({
+            elements,
+            confirmParams: {
+                payment_method_data: {
+                    billing_details: {
+                        name: billingName,
+                        email: email,
+                        address: {
+                            line1: document.getElementById('street').value || '',
+                            postal_code: document.getElementById('postalCode').value || '',
+                            city: document.getElementById('city').value || '',
+                            country: 'PL'
+                        }
+                    }
+                }
+            },
+            redirect: 'if_required'
+        });
         
         if (error) {
             throw new Error(error.message);
         }
         
-        if (paymentIntent.status === 'succeeded') {
-            await submitOrder(paymentIntent.id);
+        if (paymentIntent.status !== 'succeeded') {
+            throw new Error('Płatność nie powiodła się: ' + paymentIntent.status);
         }
+        
+        console.log('✓ Payment successful:', paymentIntent.id);
+        
+        // ===== KROK 3: ZAPIS ZAMÓWIENIA (z zabezpieczeniem) =====
+        try {
+            await submitOrder(paymentIntent.id);
+            console.log('✓ Order saved successfully');
+            
+            // Sukces - pokaż potwierdzenie
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById('successMessage').classList.add('active');
+            
+        } catch (orderError) {
+            // KRYTYCZNY BŁĄD: Płatność OK, ale zapis się wywałał!
+            console.error('❌ CRITICAL: Payment succeeded but order save failed!');
+            console.error('Payment Intent ID:', paymentIntent.id);
+            console.error('Error:', orderError);
+            
+            // Próba automatycznego refund
+            console.log('🔄 Attempting automatic refund...');
+            try {
+                const refundResponse = await fetch(`${API_URL}/refund`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        paymentIntentId: paymentIntent.id,
+                        reason: 'Order save error: ' + orderError.message
+                    })
+                });
+                
+                if (refundResponse.ok) {
+                    console.log('✓ Refund successful');
+                    alert(
+                        'Wystąpił błąd techniczny podczas zapisywania zamówienia.\n\n' +
+                        'Twoja płatność została automatycznie zwrócona.\n\n' +
+                        'Spróbuj ponownie za chwilę lub skontaktuj się z nami: kontakt@astrobiznes.pro'
+                    );
+                } else {
+                    throw new Error('Refund failed');
+                }
+                
+            } catch (refundError) {
+                // Refund nie zadziałał - zapisz payment intent dla użytkownika
+                console.error('❌ Automatic refund failed:', refundError);
+                alert(
+                    '⚠️ WAŻNE - ZAPISZ TEN KOD!\n\n' +
+                    'Twoja płatność przeszła poprawnie, ale wystąpił błąd techniczny.\n\n' +
+                    'KOD PŁATNOŚCI:\n' + paymentIntent.id + '\n\n' +
+                    'Skopiuj ten kod i wyślij go na:\nkontakt@astrobiznes.pro\n\n' +
+                    'Przetworzymy Twoje zamówienie ręcznie w ciągu 24h.'
+                );
+            }
+            
+            throw orderError; // Re-throw żeby nie pokazywać success
+        }
+        
     } catch (error) {
-        console.error('Payment error:', error);
-        alert('Błąd płatności: ' + error.message);
+        console.error('Payment flow error:', error);
+        alert('Błąd: ' + error.message);
+        
+        // Reset UI
         button.disabled = false;
-        document.getElementById('button-text').style.display = 'inline';
-        document.getElementById('spinner').style.display = 'none';
+        buttonText.style.display = 'inline';
+        spinner.style.display = 'none';
     }
 }
 
