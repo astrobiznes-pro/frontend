@@ -1412,6 +1412,16 @@ async function toggleInvoiceFields() {
         // Zaktualizuj summary po zmianie VAT
     if (currentStep === 3) {
         updatePaymentSummary();
+        
+        // Update elements z nową kwotą (po zmianie VAT)
+        const priceDetails = calculateFinalPrice();
+        if (elements) {
+            elements.update({
+                amount: priceDetails.finalPrice * 100,
+                currency: 'pln'
+            });
+            console.log('✓ Amount updated after VAT toggle:', priceDetails.finalPrice, 'PLN');
+        }
     }
 }
 
@@ -1939,6 +1949,16 @@ async function applyDiscountCode() {
             
             // Zaktualizuj summary
             updatePaymentSummary();
+
+            // Update elements z nową kwotą (po zastosowaniu rabatu)
+            const priceDetails = calculateFinalPrice();
+            if (elements) {
+                elements.update({
+                    amount: priceDetails.finalPrice * 100,
+                    currency: 'pln'
+                });
+                console.log('✓ Amount updated after discount:', priceDetails.finalPrice, 'PLN');
+            }
 
         } else {
             appliedDiscount = false;
