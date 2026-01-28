@@ -1993,9 +1993,11 @@ async function handlePayment() {
             );
             
             // Pokaż błąd na stronie
-            document.getElementById('payment-message').textContent = 
-                'Wystąpił błąd zapisu zamówienia. Płatność została automatycznie anulowana.';
-            document.getElementById('payment-message').style.display = 'block';
+            const paymentMessage = document.getElementById('payment-message');
+            if (paymentMessage) {
+                paymentMessage.textContent = 'Wystąpił błąd zapisu zamówienia. Płatność została anulowana.';
+                paymentMessage.style.display = 'block';
+            }
             
             return;
         }
