@@ -1975,38 +1975,29 @@ async function handlePayment() {
         // ZAPIS ZAMÓWIENIA
         try {
             await submitOrder(paymentIntent.id);
-            console.log('✓ Order saved');
+            console.log('✓ Order saved and success page shown');
             
         } catch (orderError) {
-            console.error('❌ Order save failed!');
+            console.error('❌ Order save failed!', orderError);
             console.error('Payment Intent ID:', paymentIntent.id);
             
-            // Auto-refund
-            try {
-                await fetch(`${API_URL}/refund`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({
-                        paymentIntentId: paymentIntent.id,
-                        reason: 'Order save error: ' + orderError.message
-                    })
-                });
-                
-                alert(
-                    'Wystąpił błąd techniczny.\n\n' +
-                    'Twoja płatność została automatycznie zwrócona.\n\n' +
-                    'Spróbuj ponownie lub skontaktuj się: kontakt@astrobiznes.pro'
-                );
-                
-            } catch (refundError) {
-                alert(
-                    '⚠️ ZAPISZ KOD:\n' + paymentIntent.id + '\n\n' +
-                    'Wyślij na: kontakt@astrobiznes.pro\n\n' +
-                    'Przetworzymy zamówienie w 24h.'
-                );
-            }
+            // Backend już wykonał auto-refund
+            alert(
+                `⚠️ WAŻNE - PŁATNOŚĆ ANULOWANA\n\n` +
+                `${orderError.message}\n\n` +
+                `Twoja płatność została automatycznie zwrócona.\n` +
+                `Pieniądze wrócą na konto w ciągu 5-10 dni roboczych.\n\n` +
+                `Możesz spróbować ponownie lub skontaktować się z nami:\n` +
+                `📧 kontakt@astrobiznes.pro\n\n` +
+                `Kod płatności (na wszelki wypadek):\n${paymentIntent.id}`
+            );
             
-            throw orderError;
+            // Pokaż błąd na stronie
+            document.getElementById('payment-message').textContent = 
+                'Wystąpił błąd zapisu zamówienia. Płatność została automatycznie anulowana.';
+            document.getElementById('payment-message').style.display = 'block';
+            
+            return;
         }
         
     } catch (error) {
@@ -2030,9 +2021,9 @@ async function submitOrder(paymentIntentId) {
         serviceTitle: service.title,
         delivery: selectedDelivery,
         price: priceDetails.finalPrice,
-        originalPrice: selectedDelivery === 'standard' ? service.standardPrice : service.expressPrice,  // ← Dla info
-        discountApplied: priceDetails.hasDiscount,  // ← Czy był rabat
-        vatIncluded: priceDetails.hasVAT,  // ← Czy VAT
+        originalPrice: selectedDelivery === 'standard' ? service.standardPrice : service.expressPrice,
+        discountApplied: priceDetails.hasDiscount,
+        vatIncluded: priceDetails.hasVAT,
         paymentIntentId: paymentIntentId,
         personalInfo: {
             name: document.getElementById('fullName').value,
@@ -2058,23 +2049,36 @@ async function submitOrder(paymentIntentId) {
         orderData.answers[q.id] = document.getElementById(q.id).value;
     });
     
-    try {
-        await fetch(`${API_URL}/orders`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(orderData)
-        });
+    console.log('Sending order to backend...');
+    
+    const response = await fetch(`${API_URL}/orders`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(orderData)
+    });
+    
+    // SPRAWDŹ CZY SUKCES
+    if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        console.error('❌ Order save failed:', errorData);
         
-        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
-        document.getElementById('successMessage').classList.add('active');
-        document.getElementById('orderNumber').textContent = orderData.orderNumber;
-        document.getElementById('confirmEmail').textContent = orderData.personalInfo.email;
-        document.getElementById('deliveryInfo').textContent = selectedDelivery === 'standard' ? 'do 24 godzin' : 'do 2 godzin';
-        
-    } catch (error) {
-        console.error('Order error:', error);
-        alert('Błąd zapisywania zamówienia. Skontaktuj się z nami.');
+        // Throw error - zostanie złapany w handlePayment
+        throw new Error(
+            errorData.details ? 
+            `Nie udało się zapisać zamówienia:\n${errorData.details.join('\n')}` :
+            `Nie udało się zapisać zamówienia. Błąd: ${errorData.error || 'Nieznany błąd serwera'}`
+        );
     }
+    
+    const result = await response.json();
+    console.log('✅ Order saved successfully:', result);
+    
+    // POKAŻ SUCCESS MESSAGE
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    document.getElementById('successMessage').classList.add('active');
+    document.getElementById('orderNumber').textContent = orderData.orderNumber;
+    document.getElementById('confirmEmail').textContent = orderData.personalInfo.email;
+    document.getElementById('deliveryInfo').textContent = selectedDelivery === 'standard' ? 'do 24 godzin' : 'do 2 godzin';
 }
 
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
